@@ -14,7 +14,6 @@ function updatePlayerMovement() {
 	cursors = game.input.keyboard.createCursorKeys();
 	var hitPlatform = game.physics.arcade.collide(player, platforms);
 
-	//reset the player's velocity (=movement)
 	player.body.velocity.x = 0;
 
 	if (cursors.left.isDown) {

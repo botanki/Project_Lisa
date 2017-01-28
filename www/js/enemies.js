@@ -39,11 +39,9 @@ function updateEnemyMovement() {
 function enemyCollide(player, enemy) {
     health.removeChildAt(health.length-1);
 
-    // Teleport the player to the same x and y position he had at start
     player.x = 32;
     player.y = game.world.height - 150;
 
-    // If the player has 0 hearts left, we kill him.
     if (health.length == 0) {
         player.kill();
     }

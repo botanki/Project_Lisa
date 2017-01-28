@@ -8,7 +8,6 @@ function createGreenMushroom(){
 }
 
 function updateCollectGreenMushroom() {
-	//make the green mushroom able to collide with the platforms
 	game.physics.arcade.overlap(player, greenMushroom, collectGreenMushroom, null, game);
 
 	function collectGreenMushroom(player, createMushroom) {
