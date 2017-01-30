@@ -6,16 +6,23 @@ var cursors;
 var stars;
 var score = 0;
 var scoreText;
-var health = [];
-var firstAidKit;
-var greenMushroom;
-var theEnemies;
-var bossX;
+var health;
+var firstAidKits;
+var greenMushrooms;
+var enemies;
+var boss;
 var spaceKey;
 var canShoot = true;
 var bullets;
 var moveSpeedMultiplier = 1.0;
 var playersLastDirection = 1;
+var currentLevel;
+var currentLevelIndex = 0;
+
+var levels = [
+	level1,
+	level3
+]
 
 function preload() {
 	game.load.image('sky', 'assets/sky.png');
@@ -29,11 +36,13 @@ function preload() {
 	game.load.image('bullet', 'assets/bullet.png');
 	game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
 	game.load.spritesheet('baddie', 'assets/baddie.png', 32, 32);
-	game.load.spritesheet('bossX', 'assets/boss.png', 130, 110);
+	game.load.spritesheet('boss3', 'assets/boss3.png', 130, 110);
 }
 
 function create() {
+
 	game.add.sprite(0, 0, 'sky');
+	game.physics.startSystem(Phaser.Physics.ARCADE);
 
 	spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 	game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
@@ -41,31 +50,46 @@ function create() {
 	bullets = game.add.group();
 	bullets.enableBody = true;
 
-	createPlatforms();
-	enablePhysics();
-	createPlayer();
-	createTheEnemies();
-	createStars();
-	createfirstAidKit();
-	createGreenMushroom();
-	createHP();
-	createBossX();
+	loadLevel(currentLevelIndex);
 }
+
+function loadLevel(levelIndex) {
+	currentLevelIndex = levelIndex;
+	currentLevel = levels[levelIndex];
+
+	createPlatforms();
+	createPlayer();
+	createEnemies();
+	createStars();
+	createfirstAidKits();
+	createGreenMushrooms();
+	createHP();
+	createBoss();
+
+	function createBoss() {
+		if (boss) {
+			boss.destroy();
+			boss = null;
+		}
+
+		if (currentLevel.boss != undefined)
+			currentLevel.boss.create();
+	}
+}
+
 
 function update() {
 	updatePlayerMovement();
-	updateCollectStar();
-	updateCollectFirstAidKit();
-	updateCollectGreenMushroom();
+	updateCollectStars();
+	updateCollectFirstAidKits();
+	updateCollectGreenMushrooms();
 	updateBullets();
-	updateEnemy();
-	updateBossX();
-	updateEnemyMovement();
-	updateBossXMovement();
+	updateEnemies();
+	if (boss) currentLevel.boss.update();
 	updateBulletsMovement();
-}
 
-function enablePhysics() {
-	game.physics.startSystem(Phaser.Physics.ARCADE);
-}
 
+	if (stars.countLiving() == 0) {
+		loadLevel(currentLevelIndex + 1);
+	}
+}

@@ -1,4 +1,5 @@
 function createHP() {
+	if (health) health.destroy();
 	health = game.add.group();
 	health.enableBody = true;
 
@@ -7,20 +8,24 @@ function createHP() {
 	}
 }
 
-function createfirstAidKit(){
-	firstAidKit = game.add.group();
-	firstAidKit.enableBody = true;
+function createfirstAidKits() {
+	if (firstAidKits) firstAidKits.destroy();
+	firstAidKits = game.add.group();
+	firstAidKits.enableBody = true;
 
-	for (var i = 0; i < 1; i++) {
-		firstAidKit.create(400, 220, 'first-aid');
-	}
+	if (!currentLevel.firstAidKits)
+		return;
+
+	currentLevel.firstAidKits.forEach(function(levelFirstAidKit) {
+		firstAidKits.create(levelFirstAidKit.spawnPos.x, levelFirstAidKit.spawnPos.y, 'first-aid');
+	});
 }
 
-function updateCollectFirstAidKit() {
-	game.physics.arcade.overlap(player, firstAidKit, collectFirstAidKit, null, game);
+function updateCollectFirstAidKits() {
+	game.physics.arcade.overlap(player, firstAidKits, collectFirstAidKit, null, game);
 
-	function collectFirstAidKit(player, createKit) {
-		createKit.kill();
+	function collectFirstAidKit(player, firstAidKit) {
+		firstAidKit.destroy();
 
 		function addHealth() {
             health.create(health.length * 30, 0, 'hp');

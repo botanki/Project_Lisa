@@ -1,17 +1,25 @@
-function createGreenMushroom(){
-	greenMushroom = game.add.group();
-	greenMushroom.enableBody = true;
+function createGreenMushrooms() {
 
-	for (var i = 0; i < 1; i++) {
-		greenMushroom.create(550, 395, 'gMushroom');
-	}
+	if (greenMushrooms) greenMushrooms.destroy();
+	greenMushrooms = game.add.group();
+	greenMushrooms.enableBody = true;
+
+	if (!currentLevel.greenMushrooms)
+		return;
+
+	currentLevel.greenMushrooms.forEach(function(levelGreenMushrooms) {
+		greenMushrooms.create(levelGreenMushrooms.spawnPos.x, levelGreenMushrooms.spawnPos.y, 'gMushroom');
+	});
 }
 
-function updateCollectGreenMushroom() {
-	game.physics.arcade.overlap(player, greenMushroom, collectGreenMushroom, null, game);
+function updateCollectGreenMushrooms() {
+	if (!currentLevel.greenMushrooms)
+		return;
 
-	function collectGreenMushroom(player, createMushroom) {
-		createMushroom.kill();
+	game.physics.arcade.overlap(player, greenMushrooms, collectGreenMushroom, null, game);
+
+	function collectGreenMushroom(player, greenMushroom) {
+		greenMushroom.destroy();
 		moveSpeedMultiplier = 2.0;
 
 		game.time.events.add(Phaser.Timer.SECOND * 2, stopBoost, this);

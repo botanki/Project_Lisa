@@ -1,48 +1,59 @@
-function createTheEnemies() {
-	theEnemies = game.add.group();
-	theEnemies.enableBody = true;
+function createEnemies() {
+	if (enemies) enemies.destroy();
+	enemies = game.add.group();
+	enemies.enableBody = true;
 
-	createEnemy(150, 320);
-	createEnemy(500, 420);
-	createEnemy(350, 120);
+	if (!currentLevel.enemies)
+		return;
+
+	currentLevel.enemies.forEach(function(levelEnemy) {
+		var enemy = enemies.create(levelEnemy.spawnPos.x, levelEnemy.spawnPos.y, 'baddie');
+		enemy = Object.assign(enemy, levelEnemy);
+
+		initializeEnemy(enemy);
+	});
 }
 
-function createEnemy(x, y) {
-    var theEnemy = theEnemies.create(x, y, 'baddie');
-    game.physics.arcade.enable(theEnemy);
-    theEnemy.body.gravity.y = 300;
-    theEnemy.body.collideWorldBounds = true;
-    theEnemy.direction = 1;
+function initializeEnemy(enemy) {
+	game.physics.arcade.enable(enemy);
+	enemy.body.gravity.y = 300;
+	enemy.body.collideWorldBounds = true;
+	enemy.direction = 1;
 }
 
-function updateEnemy(){
-	game.physics.arcade.collide(theEnemies, platforms);
-	game.physics.arcade.overlap(player, theEnemies, enemyCollide, null, game);
+function updateEnemies() {
+	if (!currentLevel.enemies)
+		return;
+
+	game.physics.arcade.collide(enemies, platforms);
+	game.physics.arcade.overlap(player, enemies, enemyCollide, null, game);
+
+	updateEnemyMovement();
 }
 
 function updateEnemyMovement() {
-    updateOneEnemyMovement(theEnemies.children[0], 0, 318);
-    updateOneEnemyMovement(theEnemies.children[1], 400, 768);
-    updateOneEnemyMovement(theEnemies.children[2], 300, 668);
+	enemies.forEach(function(enemy) {
+		updateOneEnemyMovement(enemy);
+	});
 
-    function updateOneEnemyMovement(theEnemy, leftMost, rightMost) {
-        theEnemy.body.velocity.x = 175 * theEnemy.direction;
+	function updateOneEnemyMovement(enemy) {
+		enemy.body.velocity.x = 150 * enemy.direction;
 
-        if (theEnemy.x >= rightMost) {
-            theEnemy.direction = -1;
-        } else if (theEnemy.x <= leftMost) {
-            theEnemy.direction = 1;
-        }
-    }
+		if (enemy.x >= enemy.movementPos.right) {
+			enemy.direction = -1;
+		} else if (enemy.x <= enemy.movementPos.left) {
+			enemy.direction = 1;
+		}
+	}
 }
 
 function enemyCollide(player, enemy) {
-    health.removeChildAt(health.length-1);
+	health.removeChildAt(health.length-1);
 
-    player.x = 32;
-    player.y = game.world.height - 150;
+	player.x = 32;
+	player.y = game.world.height - 150;
 
-    if (health.length == 0) {
-        player.kill();
-    }
+	if (health.length == 0) {
+		player.kill();
+	}
 }
