@@ -1,3 +1,3 @@
-# Project_Lisa
+# Project Lisa
 
 A platform game created with Phaser.
