@@ -9,25 +9,25 @@ var level1 = {
 			"sprite": 'ground'
 		}
 	],
+	ledges: [
+		{ "spawnPos": { "x": 200, "y": 450 }, "sprite": 'ground' },
+		{ "spawnPos": { "x": -50, "y": 350 }, "sprite": 'ground' },
+		{ "spawnPos": { "x": 300, "y": 250 }, "sprite": 'ground' }
+	],
 	stars: [
 		{
-			"spawnPos": { "x": 45, "y": 190 },
+			"spawnPos": { "x": 500, "y": 0 },
+			"scaling": 1,
+			"score": 1
+		},{
+			"spawnPos": { "x": 100, "y": 200 },
 			"scaling": 1,
 			"score": 1
 		}
 	],
-	enemies: [
+	firstAidKits: [
 		{
-			"spawnPos": { "x": 150, "y": 320 },
-			"movementPos": { "left": 0, "right": 318 }
-		},
-		{
-			"spawnPos": { "x": 500, "y": 420 },
-			"movementPos": { "left": 400, "right": 768 }
-		},
-		{
-			"spawnPos": { "x": 350, "y": 120 },
-			"movementPos": { "left": 300, "right": 668 }
+			"spawnPos": { "x": 400, "y": 220 }
 		}
 	]
 }

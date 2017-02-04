@@ -20,8 +20,10 @@ var currentLevel;
 var currentLevelIndex = 0;
 
 var levels = [
-	level1,
-	level3
+	//level1,
+	//level2,
+	level3,
+	//level4
 ]
 
 function preload() {
@@ -36,7 +38,7 @@ function preload() {
 	game.load.image('bullet', 'assets/bullet.png');
 	game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
 	game.load.spritesheet('baddie', 'assets/baddie.png', 32, 32);
-	game.load.spritesheet('boss3', 'assets/boss3.png', 130, 110);
+	game.load.spritesheet('boss4', 'assets/boss4.png', 130, 110);
 }
 
 function create() {
