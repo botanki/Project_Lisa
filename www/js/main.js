@@ -20,10 +20,10 @@ var currentLevel;
 var currentLevelIndex = 0;
 
 var levels = [
-	//level1,
-	//level2,
+	level1,
+	level2,
 	level3,
-	//level4
+	level4
 ]
 
 function preload() {
